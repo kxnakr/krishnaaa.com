@@ -40,7 +40,7 @@ export default async function Home() {
         >
           {NAME}
         </span>
-        <span className="max-w-80 text-center font-thin">
+        <span className="max-w-[21rem] text-center font-thin">
           Code <Emoji symbol="💻" label="laptop" /> , Caffeinated{" "}
           <Emoji symbol="☕️" label="coffee" /> by Nitro{" "}
           <Emoji symbol="🚀" label="rocket" /> , and Architecting{" "}
@@ -94,11 +94,13 @@ export default async function Home() {
         </header>
         <ul className="space-y-3">
           <Link href="https://blogs.krishnaaa.com/javascript-basics-for-reactjs-a-beginners-guide">
-            <li className="flex justify-between underline">
+            <li className="flex justify-between hover:underline">
               <span>
                 JavaScript Basics for React.js: A Beginner&apos;s Guide
               </span>
-              <span>Nov 3, 2023</span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                Nov 3, 2023
+              </span>
             </li>
           </Link>
         </ul>
@@ -112,24 +114,22 @@ export default async function Home() {
         </header>
         <ul className="space-y-3">
           {contributions.map((contribution) => (
-            <li key={contribution.repo} className="">
+            <li key={contribution.abbreviatedOid} className="">
               <Link
                 href={contribution.repoUrl}
-                className="text-sm text-gray-500 hover:underline"
+                className="text-sm text-zinc-600 dark:text-zinc-400 hover:underline"
               >
                 {contribution.repo}
               </Link>
-              <div className="flex justify-between items-center">
-                <Link
-                  href={contribution.commitUrl}
-                  className="w-4/6 hover:underline"
-                >
-                  <p>{contribution.message}</p>
-                </Link>
-                <p className="text-sm text-gray-500">
+              <Link
+                href={contribution.commitUrl}
+                className="flex justify-between items-center hover:underline"
+              >
+                <p className="w-4/6">{contribution.message}</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
                   {format(parseISO(contribution.committedDate), "MMM do, yy")}
                 </p>
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

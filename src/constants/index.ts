@@ -41,12 +41,16 @@ export const TIME_ZONE = "Asia/Kolkata";
 // Social Media
 export const EMAIL_ADDRESS = "dev@krishnaaa.com";
 export const GMAIL_ADDRESS = "krishnakumarlal8421@gmail.com";
-export const GITHUB_USERNAME = "krishna8421";
-export const TWITTER_USERNAME = "krishnaaa8421";
-export const LINKEDIN_USERNAME = "krishnaaa8421";
+export const UNIVERSAL_USERNAME_PRIMARY = "krishna8421";
+export const UNIVERSAL_USERNAME_SECONDARY = "krishnaaa8421";
+export const GITHUB_USERNAME = UNIVERSAL_USERNAME_PRIMARY;
+export const TWITTER_USERNAME = UNIVERSAL_USERNAME_SECONDARY;
+export const LINKEDIN_USERNAME = UNIVERSAL_USERNAME_SECONDARY;
 export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
 export const TWITTER_URL = `https://twitter.com/${TWITTER_USERNAME}`;
 export const LINKEDIN_URL = `https://linkedin.com/in/${LINKEDIN_USERNAME}`;
+export const LEETCODE_URL = `https://leetcode.com/in/${UNIVERSAL_USERNAME_PRIMARY}`;
+export const RESUME_URL = `${GITHUB_URL}/resume/blob/main/krishna_resume.pdf`;
 
 // Google Analytics
 export const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;

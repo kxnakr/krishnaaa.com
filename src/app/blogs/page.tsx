@@ -8,9 +8,11 @@ const BlogsPage = () => {
       </header>
       <ul className="space-y-3">
         <Link href="https://blogs.krishnaaa.com/javascript-basics-for-reactjs-a-beginners-guide">
-          <li className="flex justify-between underline">
+          <li className="flex justify-between hover:underline">
             <span>JavaScript Basics for React.js: A Beginner&apos;s Guide</span>
-            <span>Nov 3, 2023</span>
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">
+              Nov 3, 2023
+            </span>
           </li>
         </Link>
       </ul>
