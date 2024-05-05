@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "@/styles/globals.css";
 import { PropsWithChildren } from "react";
+import "@/styles/globals.css";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/constants";
-
-const inter = Inter({ subsets: ["latin"] });
+import { spaceGrotesk } from "@/fonts";
+import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
@@ -13,8 +15,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased `}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          "antialiased bg-light dark:bg-dark",
+          spaceGrotesk.className
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative max-w-xl py-2 px-4 flex min-h-screen flex-col gap-8 m-auto">
+            <Navbar />
+            <div className="flex-grow">{children}</div>
+            <Footer />
+          </div>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -53,3 +53,10 @@ export const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 // SendGrid API Key
 export const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+
+// Github Access Token
+export const GITHUB_ACCESS_TOKEN = process.env.GITHUB_ACCESS_TOKEN;
+
+// APIs and Services
+export const GITHUB_API = "https://api.github.com/graphql";
+export const GITHUB_USER_ID = "MDQ6VXNlcjcxODE3Njkx";
