@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getRecentContributions } from "../actions";
+import { getRecentContributions } from "../../lib/actions";
 import { format, parseISO } from "date-fns";
 
 const GithubActivityPage = async () => {

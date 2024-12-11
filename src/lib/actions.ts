@@ -1,5 +1,9 @@
 "use server";
 
+import { db } from "@/db";
+import { z } from "zod";
+import { newsletterUsersTable } from "@/db/schema";
+
 import { GITHUB_ACCESS_TOKEN, GITHUB_USERNAME } from "@/constants";
 
 export interface IContribution {
@@ -103,4 +107,35 @@ export const getRecentContributions = async (limit: number = 100) => {
   );
 
   return allCommits;
+};
+
+const userEmailSchema = z.string().email();
+
+export const addToNewsletter = async (formData: FormData) => {
+  const result = userEmailSchema.safeParse(formData.get("email"));
+
+  if (result.error) {
+    return {
+      error: result.error.format()._errors[0],
+    };
+  }
+
+  try {
+    const a = await db.insert(newsletterUsersTable).values({
+      email: result.data,
+    });
+    return {
+      success: "You've been added to the newsletter!",
+    };
+  } catch (error: unknown) {
+    if (error instanceof Error && (error as any).code === "23505") {
+      return {
+        error: "You're already subscribed to the newsletter.",
+      };
+    }
+    return {
+      error:
+        "An unexpected error occurred while processing your request. Please try again later.",
+    };
+  }
 };

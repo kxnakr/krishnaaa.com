@@ -5,6 +5,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/constants";
 import { spaceGrotesk } from "@/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster closeButton />
           <div className="relative max-w-xl py-2 px-4 flex min-h-screen flex-col gap-8 m-auto">
             <Navbar />
             <div className="flex-grow">{children}</div>

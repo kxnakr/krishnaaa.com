@@ -27,8 +27,6 @@ export const sendEmailToMe = async (formData: FormData) => {
   const email = formData.get("email");
   const message = formData.get("message");
 
-  console.log({ name, email, message });
-
   const validatedFields = formDataSchema.safeParse({
     email,
     name,
@@ -56,7 +54,6 @@ export const sendEmailToMe = async (formData: FormData) => {
   };
 
   const mailRes = await sgMail.send(msg);
-  console.log(mailRes);
 
   return {
     success: mailRes[0].statusCode === 202,

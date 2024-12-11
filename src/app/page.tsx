@@ -17,8 +17,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { splineSansMono } from "@/fonts";
 import { cn } from "@/lib/utils";
-import { getRecentContributions } from "./actions";
+import { getRecentContributions } from "../lib/actions";
 import { format, parseISO } from "date-fns";
+import Newsletter from "@/components/newsletter";
 
 export default async function Home() {
   const contributions = await getRecentContributions(5);
@@ -140,15 +141,7 @@ export default async function Home() {
           ))}
         </ul>
       </section>
-      <section className="space-y-8">
-        <header className="font-bold">
-          <span>newsletter</span>
-        </header>
-        <div className="flex w-full items-center space-x-4">
-          <Input type="email" placeholder="Email" />
-          <Button type="submit">Subscribe</Button>
-        </div>
-      </section>
+      <Newsletter />
     </main>
   );
 }
