@@ -40,7 +40,7 @@ const Newsletter = () => {
         }}
         className="flex flex-col sm:flex-row w-full items-center gap-4"
       >
-        <Input type="email" name="email" placeholder="Email" />
+        <Input type="email" name="email" required placeholder="Email" />
         <SubscribeButton />
       </form>
     </section>

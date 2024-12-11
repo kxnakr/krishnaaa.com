@@ -70,24 +70,21 @@ export default async function Home() {
         <ul className="list-disc space-y-3 ml-5">
           <li>
             Self-taught full-stack developer with expertise in Node.js, Next.js,
-            and Golang
-            <Emoji symbol="💻" label="laptop" />.
+            and Golang <Emoji symbol="💻" label="laptop" />.
           </li>
           <li>
-            Passionate about backend development and DevOps
+            Passionate about backend development and DevOps{" "}
             <Emoji symbol="⚙️" label="gear" /> to build efficient and scalable
             systems.
           </li>
           <li>
             Proficient in leveraging Docker, GCP, and CI/CD to create reliable
-            and cloud-native applications
-            <Emoji symbol="☁️" label="cloud" />.
+            and cloud-native applications <Emoji symbol="☁️" label="cloud" />.
           </li>
           <li>
             4+ years of freelancing experience delivering solutions like static
             sites, LMS platforms, dashboards, and agency landing pages tailored
-            to startup needs
-            <Emoji symbol="🛠️" label="tools" />.
+            to startup needs <Emoji symbol="🛠️" label="tools" />.
           </li>
         </ul>
       </section>

@@ -2,8 +2,8 @@
 
 import { db } from "@/db";
 import { z } from "zod";
+import sgMail from "@sendgrid/mail";
 import { newsletterUsersTable } from "@/db/schema";
-
 import { GITHUB_ACCESS_TOKEN, GITHUB_USERNAME } from "@/constants";
 
 export interface IContribution {
@@ -112,17 +112,17 @@ export const getRecentContributions = async (limit: number = 100) => {
 const userEmailSchema = z.string().email();
 
 export const addToNewsletter = async (formData: FormData) => {
-  const result = userEmailSchema.safeParse(formData.get("email"));
+  const validatedResult = userEmailSchema.safeParse(formData.get("email"));
 
-  if (result.error) {
+  if (validatedResult.error) {
     return {
-      error: result.error.format()._errors[0],
+      error: validatedResult.error.format()._errors[0],
     };
   }
 
   try {
     const a = await db.insert(newsletterUsersTable).values({
-      email: result.data,
+      email: validatedResult.data,
     });
     return {
       success: "You've been added to the newsletter!",
@@ -135,7 +135,55 @@ export const addToNewsletter = async (formData: FormData) => {
     }
     return {
       error:
-        "An unexpected error occurred while processing your request. Please try again later.",
+        "An unexpected error occurred while processing your request. Please try again!",
+    };
+  }
+};
+
+const contactUsSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1),
+  message: z.string().min(1),
+});
+
+export const sendEmailToMe = async (formData: FormData) => {
+  const validatedResult = contactUsSchema.safeParse({
+    email: formData.get("email"),
+    name: formData.get("name"),
+    message: formData.get("message"),
+  });
+
+  if (!validatedResult.success) {
+    return {
+      error: validatedResult.error.format().email?._errors[0] ?? "Invalid data",
+    };
+  }
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+
+  try {
+    const mailRes = await sgMail.send({
+      from: `Krishna Kumar <portfolio@krishnaaa.com>`,
+      to: "krishnakumarlal8421@gmail.com",
+      subject: `🚀 New Message from ${validatedResult.data.name} 🚀 | krishnaaa.com`,
+      html: `
+          <p>Name:         ${validatedResult.data.name}</p>
+          <p>Email:        ${validatedResult.data.email}</p>
+          <p>Message:      ${validatedResult.data.message}</p>
+      `,
+    });
+
+    if (mailRes[0].statusCode !== 202) {
+      throw new Error();
+    }
+
+    return {
+      success: "Message sent successfully! I'll get back to you soon.",
+    };
+  } catch (error: unknown) {
+    return {
+      error:
+        "An unexpected error occurred while processing your request. Please try again!",
     };
   }
 };

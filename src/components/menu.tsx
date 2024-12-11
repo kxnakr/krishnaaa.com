@@ -69,26 +69,26 @@ export function Menu() {
       title: "Home",
       path: "/",
     },
-    {
-      icon: LuUser2,
-      title: "About",
-      path: "/about",
-    },
-    {
-      icon: DashboardIcon,
-      title: "Projects",
-      path: "/projects",
-    },
+    // {
+    //   icon: LuUser2,
+    //   title: "About",
+    //   path: "/about",
+    // },
+    // {
+    //   icon: DashboardIcon,
+    //   title: "Projects",
+    //   path: "/projects",
+    // },
     {
       icon: TbWriting,
       title: "Blogs",
       path: "/blogs",
     },
-    {
-      icon: RiSketching,
-      title: "Gallery",
-      path: "/gallery",
-    },
+    // {
+    //   icon: RiSketching,
+    //   title: "Gallery",
+    //   path: "/gallery",
+    // },
     {
       icon: DiGitBranch,
       title: "Github Activity",
