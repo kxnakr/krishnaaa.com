@@ -40,13 +40,13 @@ export default async function Home() {
         >
           {NAME}
         </span>
-        <span className="max-w-[21rem] text-center font-thin">
-          Code <Emoji symbol="💻" label="laptop" /> , Caffeinated{" "}
-          <Emoji symbol="☕️" label="coffee" /> by Nitro{" "}
-          <Emoji symbol="🚀" label="rocket" /> , and Architecting{" "}
-          <Emoji symbol="🏗" label="building construction" /> Systems for Speed
-          🏎️.
+        <span className="w-full sm:w-5/6 text-center">
+          Passionate about crafting user-friendly applications{" "}
+          <Emoji symbol="🚀" label="rocket" />, using modern technologies to
+          deliver efficient and delightful experiences{" "}
+          <Emoji symbol="💻" label="laptop" />.
         </span>
+
         <div className="flex gap-6 mt-2">
           <Link href={GITHUB_URL} target="_blank">
             <FaGithub size={24} />
@@ -68,23 +68,29 @@ export default async function Home() {
         </header>
         <ul className="list-disc space-y-3 ml-5">
           <li>
-            Mastermind of user-friendly websites (think 🤔 : smooth interfaces
-            you&apos;ll love).
+            Self-taught full-stack developer with expertise in Node.js, Next.js,
+            and Golang
+            <Emoji symbol="💻" label="laptop" />.
           </li>
           <li>
-            Once disassembled a bike engine 🏍️ (don&apos;t worry, I reassembled
-            it!) - that&apos;s how curious I am!
+            Passionate about backend development and DevOps
+            <Emoji symbol="⚙️" label="gear" /> to build efficient and scalable
+            systems.
           </li>
           <li>
-            My insatiable curiosity fuels exploration in machine learning 🤖,
-            pushing the boundaries of human-computer interaction.
+            Proficient in leveraging Docker, GCP, and CI/CD to create reliable
+            and cloud-native applications
+            <Emoji symbol="☁️" label="cloud" />.
           </li>
           <li>
-            Bonus: I build the secret code that makes everything scalable:
-            powerful backend systems using AWS & GCP.
+            4+ years of freelancing experience delivering solutions like static
+            sites, LMS platforms, dashboards, and agency landing pages tailored
+            to startup needs
+            <Emoji symbol="🛠️" label="tools" />.
           </li>
         </ul>
       </section>
+
       <section className="space-y-8">
         <header className="font-bold flex justify-between">
           <span>blogs</span>
