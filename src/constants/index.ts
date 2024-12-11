@@ -50,7 +50,8 @@ export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
 export const TWITTER_URL = `https://twitter.com/${TWITTER_USERNAME}`;
 export const LINKEDIN_URL = `https://linkedin.com/in/${LINKEDIN_USERNAME}`;
 export const LEETCODE_URL = `https://leetcode.com/in/${UNIVERSAL_USERNAME_PRIMARY}`;
-export const RESUME_URL = `${GITHUB_URL}/resume/blob/main/krishna_resume.pdf`;
+export const RESUME_URL =
+  "https://drive.google.com/file/d/1jivI2daLMh9RuoMvDMaBhg3NCvHOX3AF/view?usp=sharing";
 
 // Google Analytics
 export const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;

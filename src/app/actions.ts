@@ -64,6 +64,9 @@ export const getRecentContributions = async (limit: number = 100) => {
       Authorization: `Bearer ${GITHUB_ACCESS_TOKEN}`,
     },
     body: JSON.stringify({ query }),
+    next: {
+      revalidate: 3600,
+    },
   });
 
   const { data } = await response.json();
