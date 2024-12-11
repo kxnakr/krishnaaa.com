@@ -69,26 +69,11 @@ export function Menu() {
       title: "Home",
       path: "/",
     },
-    // {
-    //   icon: LuUser2,
-    //   title: "About",
-    //   path: "/about",
-    // },
-    // {
-    //   icon: DashboardIcon,
-    //   title: "Projects",
-    //   path: "/projects",
-    // },
     {
       icon: TbWriting,
       title: "Blogs",
       path: "/blogs",
     },
-    // {
-    //   icon: RiSketching,
-    //   title: "Gallery",
-    //   path: "/gallery",
-    // },
     {
       icon: DiGitBranch,
       title: "Github Activity",
@@ -102,9 +87,24 @@ export function Menu() {
 
     {
       icon: IoCodeSlash,
-      title: "Scripts",
-      path: "/scripts",
+      title: "Snippets",
+      path: "/snippets",
     },
+    // {
+    //   icon: LuUser2,
+    //   title: "About",
+    //   path: "/about",
+    // },
+    // {
+    //   icon: DashboardIcon,
+    //   title: "Projects",
+    //   path: "/projects",
+    // },
+    // {
+    //   icon: RiSketching,
+    //   title: "Gallery",
+    //   path: "/gallery",
+    // },
   ];
 
   const externalLinks = [

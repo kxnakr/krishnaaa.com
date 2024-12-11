@@ -8,6 +8,13 @@
       "when": 1733920225028,
       "tag": "0000_big_mauler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1733954725873,
+      "tag": "0001_empty_hercules",
+      "breakpoints": true
     }
   ]
 }

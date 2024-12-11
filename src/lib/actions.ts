@@ -3,8 +3,9 @@
 import { db } from "@/db";
 import { z } from "zod";
 import sgMail from "@sendgrid/mail";
-import { newsletterUsersTable } from "@/db/schema";
+import { newsletterUsersTable, snippetsTable } from "@/db/schema";
 import { GITHUB_ACCESS_TOKEN, GITHUB_USERNAME } from "@/constants";
+import { eq } from "drizzle-orm";
 
 export interface IContribution {
   repo: string;
@@ -187,3 +188,29 @@ export const sendEmailToMe = async (formData: FormData) => {
     };
   }
 };
+
+export async function getSnippets() {
+  try {
+    const snippets = await db
+      .select()
+      .from(snippetsTable)
+      .orderBy(snippetsTable.createdAt);
+    return snippets;
+  } catch (error) {
+    console.error("Error fetching snippets:", error);
+    return [];
+  }
+}
+
+export async function getSnippetBySlug(slug: string) {
+  try {
+    const [snippet] = await db
+      .select()
+      .from(snippetsTable)
+      .where(eq(snippetsTable.slug, slug));
+    return snippet;
+  } catch (error) {
+    console.error("Error fetching snippet:", error);
+    return null;
+  }
+}
