@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRecentContributions } from "../../lib/actions";
 import { format, parseISO } from "date-fns";
+import MyGithubCalendar from "./my-github-calendar";
 
 const GithubActivityPage = async () => {
   const contributions = await getRecentContributions(100);
@@ -9,6 +10,7 @@ const GithubActivityPage = async () => {
       <header className="font-bold">
         <span>github activity</span>
       </header>
+      <MyGithubCalendar />
       <ul className="space-y-8">
         {contributions.map((contribution) => (
           <li key={contribution.abbreviatedOid} className="">
