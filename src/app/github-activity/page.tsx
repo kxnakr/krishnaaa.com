@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getRecentContributions } from "../../lib/actions";
+import { getRecentContributions } from "@/lib/actions";
 import { format, parseISO } from "date-fns";
 import MyGithubCalendar from "./my-github-calendar";
 
