@@ -2,7 +2,7 @@ import Emoji from "@/components/emoji";
 import {
   EMAIL_ADDRESS,
   GITHUB_URL,
-  GITHUB_USERNAME,
+  // GITHUB_USERNAME,
   LINKEDIN_URL,
   NAME,
   TWITTER_URL,
@@ -13,16 +13,19 @@ import { FaGithub } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
 import { splineSansMono } from "@/fonts";
 import { cn } from "@/lib/utils";
-import { getRecentContributions } from "../lib/actions";
+import { getRecentContributions, getSnippets } from "../lib/actions";
 import { format, parseISO } from "date-fns";
 import Newsletter from "@/components/newsletter";
+import CopySnippet from "./snippets/copy-snippet";
+import DownloadSnippet from "./snippets/download-snippet";
 
 export default async function Home() {
   const contributions = await getRecentContributions(5);
+  const snippets = await getSnippets();
 
   return (
     <main className="flex flex-col gap-20">
@@ -63,6 +66,7 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+
       <section className="space-y-8">
         <header className="font-bold">
           <span>tldr;</span>
@@ -109,6 +113,36 @@ export default async function Home() {
           </Link>
         </ul>
       </section>
+
+      <section className="space-y-8">
+        <header className="font-bold flex justify-between">
+          <span>snippets</span>
+          <Link href="/snippets">
+            <span className="text-sm font-light">show all</span>
+          </Link>
+        </header>
+        <ul className="space-y-3">
+          {snippets.slice(0, 5).map((snippet) => (
+            <li key={snippet.id} className="flex justify-between items-center">
+              <Link
+                href={`/snippets/${snippet.slug}`}
+                className="hover:underline"
+              >
+                {snippet.title}
+              </Link>
+              <div className="flex gap-2">
+                <CopySnippet iconOnly code={snippet.code} />
+                <DownloadSnippet
+                  iconOnly
+                  code={snippet.code}
+                  filename={snippet.filename}
+                />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="space-y-8">
         <header className="font-bold flex justify-between">
           <span>github activity</span>
