@@ -24,7 +24,9 @@ import CopySnippet from "./snippets/copy-snippet";
 import DownloadSnippet from "./snippets/download-snippet";
 
 export default async function Home() {
-  const contributions = await getRecentContributions(5);
+  const contributions = await getRecentContributions({
+    topFiveOnly: true,
+  });
   const snippets = await getSnippets();
 
   return (

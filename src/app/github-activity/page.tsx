@@ -4,7 +4,7 @@ import { format, parseISO } from "date-fns";
 import MyGithubCalendar from "./my-github-calendar";
 
 const GithubActivityPage = async () => {
-  const contributions = await getRecentContributions(100);
+  const contributions = await getRecentContributions();
   return (
     <main className="space-y-8">
       <header className="font-bold">

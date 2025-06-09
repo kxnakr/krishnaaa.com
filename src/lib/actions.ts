@@ -35,18 +35,30 @@ export interface IRepo {
   };
 }
 
-export const getRecentContributions = async (limit: number = 100) => {
+export interface GetContributionsOptions {
+  topFiveOnly?: boolean;
+}
+
+export const getRecentContributions = async (
+  options: GetContributionsOptions = {}
+) => {
+  const { topFiveOnly = false } = options;
+
+  const config = topFiveOnly
+    ? { limit: 5, commitsPerRepo: 10, repoCount: 20 }
+    : { limit: 100, commitsPerRepo: 100, repoCount: 15 };
+
   const query = `
   query {
     user(login: "${GITHUB_USERNAME}") {
-      repositories(first: 15, orderBy: {field: UPDATED_AT, direction: DESC}) {
+      repositories(first: ${config.repoCount}, orderBy: {field: UPDATED_AT, direction: DESC}) {
         nodes {
           name
           url
           defaultBranchRef {
             target {
               ... on Commit {
-                history(first: 100, author: {id: "MDQ6VXNlcjcxODE3Njkx"}) {
+                history(first: ${config.commitsPerRepo}, author: {id: "MDQ6VXNlcjcxODE3Njkx"}) {
                   nodes {
                     url
                     message
@@ -67,48 +79,46 @@ export const getRecentContributions = async (limit: number = 100) => {
     method: "POST",
     headers: {
       Authorization: `Bearer ${GITHUB_ACCESS_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ query }),
-    cache: "no-cache",
-    // next: {
-    //   revalidate: 3600,
-    // },
+    next: {
+      revalidate: 3600,
+    },
   });
 
-  const { data } = await response.json();
+  if (!response.ok) {
+    throw new Error(`GitHub API error: ${response.status}`);
+  }
+
+  const { data, errors } = await response.json();
+
+  if (errors) {
+    throw new Error(`GraphQL errors: ${JSON.stringify(errors)}`);
+  }
 
   const allCommits: IContribution[] = [];
 
-  let counter = 0;
-
   data.user.repositories.nodes.forEach((repo: IRepo) => {
-    if (counter >= limit) {
-      return;
-    }
-
-    repo.defaultBranchRef.target.history.nodes.forEach((commit) => {
-      if (counter >= limit) {
-        return;
-      }
-
-      allCommits.push({
-        repo: repo.name,
-        repoUrl: repo.url,
-        commitUrl: commit.url,
-        committedDate: commit.committedDate,
-        message: commit.message,
-        abbreviatedOid: commit.abbreviatedOid,
+    if (repo.defaultBranchRef?.target?.history?.nodes) {
+      repo.defaultBranchRef.target.history.nodes.forEach((commit) => {
+        allCommits.push({
+          repo: repo.name,
+          repoUrl: repo.url,
+          commitUrl: commit.url,
+          committedDate: commit.committedDate,
+          message: commit.message,
+          abbreviatedOid: commit.abbreviatedOid,
+        });
       });
-
-      counter++;
-    });
+    }
   });
 
   allCommits.sort(
     (a, b) => +new Date(b.committedDate) - +new Date(a.committedDate)
   );
 
-  return allCommits;
+  return allCommits.slice(0, config.limit);
 };
 
 const userEmailSchema = z.string().email();
