@@ -41,17 +41,13 @@ export const TIME_ZONE = "Asia/Kolkata";
 // Social Media
 export const EMAIL_ADDRESS = "dev@krishnaaa.com";
 export const GMAIL_ADDRESS = "krishnakumarlal8421@gmail.com";
-export const UNIVERSAL_USERNAME_PRIMARY = "krishna8421";
-export const UNIVERSAL_USERNAME_SECONDARY = "krishnaaa8421";
-export const GITHUB_USERNAME = UNIVERSAL_USERNAME_PRIMARY;
-export const TWITTER_USERNAME = UNIVERSAL_USERNAME_SECONDARY;
-export const LINKEDIN_USERNAME = UNIVERSAL_USERNAME_SECONDARY;
-export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
-export const TWITTER_URL = `https://twitter.com/${TWITTER_USERNAME}`;
-export const LINKEDIN_URL = `https://linkedin.com/in/${LINKEDIN_USERNAME}`;
-export const LEETCODE_URL = `https://leetcode.com/in/${UNIVERSAL_USERNAME_PRIMARY}`;
+export const UNIVERSAL_USERNAME = "kxnakr";
+export const GITHUB_URL = `https://github.com/${UNIVERSAL_USERNAME}`;
+export const TWITTER_URL = `https://twitter.com/${UNIVERSAL_USERNAME}`;
+export const LINKEDIN_URL = `https://linkedin.com/in/${UNIVERSAL_USERNAME}`;
+export const LEETCODE_URL = `https://leetcode.com/u/${UNIVERSAL_USERNAME}`;
 export const RESUME_URL =
-  "https://drive.google.com/file/d/1jivI2daLMh9RuoMvDMaBhg3NCvHOX3AF/view?usp=sharing";
+  "https://drive.google.com/file/d/1ZlSClQcy0z2oHSJ3W8Afvx4t4QBppiw2/view?usp=sharing";
 
 // Google Analytics
 export const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;

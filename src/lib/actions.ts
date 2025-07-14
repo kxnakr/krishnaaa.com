@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { z } from "zod";
 import sgMail from "@sendgrid/mail";
 import { newsletterUsersTable, snippetsTable } from "@/db/schema";
-import { GITHUB_ACCESS_TOKEN, GITHUB_USERNAME } from "@/constants";
+import { GITHUB_ACCESS_TOKEN, UNIVERSAL_USERNAME } from "@/constants";
 import { eq } from "drizzle-orm";
 
 export interface IContribution {
@@ -50,7 +50,7 @@ export const getRecentContributions = async (
 
   const query = `
   query {
-    user(login: "${GITHUB_USERNAME}") {
+    user(login: "${UNIVERSAL_USERNAME}") {
       repositories(first: ${config.repoCount}, orderBy: {field: UPDATED_AT, direction: DESC}) {
         nodes {
           name

@@ -1,5 +1,6 @@
 "use client";
 
+import { UNIVERSAL_USERNAME } from "@/constants";
 import { useTheme } from "next-themes";
 import GitHubCalendar from "react-github-calendar";
 
@@ -8,7 +9,7 @@ const MyGithubCalendar = () => {
   return (
     <div className="flex justify-center">
       <GitHubCalendar
-        username="krishna8421"
+        username={UNIVERSAL_USERNAME}
         blockMargin={2}
         blockRadius={2.5}
         blockSize={8}

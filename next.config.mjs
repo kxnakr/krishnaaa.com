@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: "/github",
-        destination: "https://github.com/krishna8421",
+        destination: "https://github.com/kxnakr",
         permanent: true,
       },
     ];
