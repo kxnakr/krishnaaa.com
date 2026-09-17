@@ -1,7 +1,7 @@
-import { db } from "./index";
-import { snippetsTable } from "./schema";
-import { config } from "dotenv";
 import { createId } from "@paralleldrive/cuid2";
+import { config } from "dotenv";
+import { getDb } from "./index";
+import { snippetsTable } from "./schema";
 
 config({ path: ".env.local" });
 
@@ -20,11 +20,13 @@ async function addSnippet(snippet: SnippetInput) {
     .replace(/(^-|-$)/g, "");
 
   try {
-    await db.insert(snippetsTable).values({
-      ...snippet,
-      slug,
-      id: createId(),
-    });
+    await getDb()
+      .insert(snippetsTable)
+      .values({
+        ...snippet,
+        slug,
+        id: createId(),
+      });
     console.log("Snippet added successfully!");
   } catch (error) {
     console.error("Error adding snippet:", error);

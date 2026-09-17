@@ -1,6 +1,7 @@
 const BikeSvg = () => {
   return (
     <svg
+      aria-hidden="true"
       width="166"
       height="299"
       viewBox="0 0 166 299"

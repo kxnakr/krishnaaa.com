@@ -1,34 +1,31 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { HiMiniMoon } from "react-icons/hi2";
-import { HiSun } from "react-icons/hi";
 import { useEffect } from "react";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-
+  const { resolvedTheme, setTheme } = useTheme();
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setTheme(theme === "dark" ? "light" : "dark");
+    const down = (event: KeyboardEvent) => {
+      if (event.key === "j" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
       }
     };
-
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [theme, setTheme]);
-
+  }, [resolvedTheme, setTheme]);
   return (
-    <div>
-      <div
-        aria-label="Toggle Dark Mode"
-        className="p-2 cursor-pointer"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        {theme === "dark" ? <HiSun size={18} /> : <HiMiniMoon size={18} />}
-      </div>
-    </div>
+    <button
+      type="button"
+      aria-label="Toggle color theme"
+      title="Toggle color theme (⌘/Ctrl J)"
+      className="icon-button"
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+    >
+      <Moon className="size-4 dark:hidden" aria-hidden="true" />
+      <Sun className="hidden size-4 dark:block" aria-hidden="true" />
+    </button>
   );
 }

@@ -1,11 +1,11 @@
-import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import { config } from "dotenv";
+import { drizzle } from "drizzle-orm/neon-http";
 
-config({ path: ".env.local" });
+config({ path: ".env.local", quiet: true });
 
-const sql = neon(process.env.DATABASE_URL!);
-export const db = drizzle({
-  client: sql,
-  logger: process.env.NODE_ENV !== "production",
-});
+export function getDb() {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not configured.");
+  return drizzle({ client: neon(url), logger: false });
+}

@@ -1,23 +1,27 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { writing } from "@/content/site";
 
-const BlogsPage = () => {
+export const metadata: Metadata = {
+  title: "Writing",
+  alternates: { canonical: "/blogs" },
+};
+
+export default function BlogsPage() {
   return (
-    <main className="space-y-8">
-      <header className="font-bold">
-        <span>blogs</span>
-      </header>
-      <ul className="space-y-3">
-        <Link href="https://blogs.krishnaaa.com/javascript-basics-for-reactjs-a-beginners-guide">
-          <li className="flex justify-between hover:underline">
-            <span>JavaScript Basics for React.js: A Beginner&apos;s Guide</span>
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              Nov 3, 2023
-            </span>
+    <main id="main" className="page-enter space-y-8">
+      <h1 className="text-xl font-semibold">writing</h1>
+      <ul className="space-y-6">
+        {writing.map((post) => (
+          <li key={post.url}>
+            <a href={post.url} className="text-link leading-relaxed">
+              {post.title}
+            </a>
+            <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+              {post.date}
+            </p>
           </li>
-        </Link>
+        ))}
       </ul>
     </main>
   );
-};
-
-export default BlogsPage;
+}

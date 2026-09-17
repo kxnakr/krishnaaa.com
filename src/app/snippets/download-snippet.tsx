@@ -27,6 +27,7 @@ const DownloadSnippet = ({
 
   return (
     <Button
+      aria-label={`Download ${filename}`}
       variant="outline"
       size="sm"
       onClick={handleDownload}

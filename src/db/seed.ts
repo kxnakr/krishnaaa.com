@@ -1,11 +1,11 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { newsletterUsersTable } from "@/db/schema";
 
 async function seed() {
   const emails = ["dev@krishnaaa.com", "krishna@entange.com"];
 
   for (const email of emails) {
-    await db.insert(newsletterUsersTable).values({
+    await getDb().insert(newsletterUsersTable).values({
       email,
       isSubscribed: true,
     });

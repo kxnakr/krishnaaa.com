@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  HamburgerMenuIcon,
-  ChatBubbleIcon,
-  GitHubLogoIcon,
-  DashboardIcon,
-} from "@radix-ui/react-icons";
+import { Menu as MenuIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -15,161 +12,82 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { TbWriting } from "react-icons/tb";
-import { LuHome, LuUser2 } from "react-icons/lu";
-import { IoCodeSlash } from "react-icons/io5";
-import {
-  GITHUB_URL,
-  LEETCODE_URL,
-  LINKEDIN_URL,
-  RESUME_URL,
-  TWITTER_URL,
-} from "@/constants";
-import { DiGitBranch } from "react-icons/di";
-import { FaLinkedin } from "react-icons/fa";
-import { SiLeetcode } from "react-icons/si";
-import { GrTwitter } from "react-icons/gr";
-import { MdOutlineContactPage } from "react-icons/md";
-import { RiSketching } from "react-icons/ri";
+import { GITHUB_URL, LINKEDIN_URL, RESUME_URL, TWITTER_URL } from "@/constants";
+
+const pages = [
+  ["Home", "/"],
+  ["Projects", "/projects"],
+  ["Writing", "/blogs"],
+  ["Snippets", "/snippets"],
+  ["GitHub activity", "/github-activity"],
+  ["Contact", "/contact"],
+] as const;
+const links = [
+  ["GitHub", GITHUB_URL],
+  ["LinkedIn", LINKEDIN_URL],
+  ["X", TWITTER_URL],
+  ["Resume", RESUME_URL],
+] as const;
 
 export function Menu() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
+    const down = (event: KeyboardEvent) => {
+      if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setOpen((value) => !value);
       }
     };
-
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
-
-  const redirectInternal = (path: string) => {
-    router.push(path);
-    setOpen(false);
-  };
-
-  const redirectExternal = (path: string) => {
-    window.open(path, "_blank");
-    setOpen(false);
-  };
-
-  const iconsClassName = "mr-4 h-4 w-4";
-
-  const internalLinks = [
-    {
-      icon: LuHome,
-      title: "Home",
-      path: "/",
-    },
-    {
-      icon: TbWriting,
-      title: "Blogs",
-      path: "/blogs",
-    },
-    {
-      icon: DiGitBranch,
-      title: "Github Activity",
-      path: "/github-activity",
-    },
-    {
-      icon: ChatBubbleIcon,
-      title: "Contact",
-      path: "/contact",
-    },
-
-    {
-      icon: IoCodeSlash,
-      title: "Snippets",
-      path: "/snippets",
-    },
-    // {
-    //   icon: LuUser2,
-    //   title: "About",
-    //   path: "/about",
-    // },
-    // {
-    //   icon: DashboardIcon,
-    //   title: "Projects",
-    //   path: "/projects",
-    // },
-    // {
-    //   icon: RiSketching,
-    //   title: "Gallery",
-    //   path: "/gallery",
-    // },
-  ];
-
-  const externalLinks = [
-    {
-      icon: GitHubLogoIcon,
-      title: "Github",
-      path: GITHUB_URL,
-    },
-    {
-      icon: FaLinkedin,
-      title: "LinkedIn",
-      path: LINKEDIN_URL,
-    },
-    {
-      icon: GrTwitter,
-      title: "Twitter",
-      path: TWITTER_URL,
-    },
-    {
-      icon: SiLeetcode,
-      title: "LeetCode",
-      path: LEETCODE_URL,
-    },
-    {
-      icon: MdOutlineContactPage,
-      title: "Resume",
-      path: RESUME_URL,
-    },
-  ];
-
   return (
     <>
-      <div
-        aria-label="Menu Toggle"
-        className="p-2 cursor-pointer"
-        onClick={() => setOpen((open) => !open)}
+      <button
+        id="menu-trigger"
+        type="button"
+        className="icon-button"
+        aria-label="Open menu"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        title="Open menu (⌘/Ctrl K)"
+        onClick={() => setOpen(true)}
       >
-        <HamburgerMenuIcon />
-      </div>
+        <MenuIcon className="size-4" aria-hidden="true" />
+      </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Navigate to..." />
+        <CommandInput
+          aria-label="Search pages and links"
+          placeholder="Go to…"
+        />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Internal">
-            {internalLinks.map((link, index) => (
-              <Link href={link.path} key={index}>
-                <CommandItem
-                  key={index}
-                  onSelect={() => redirectInternal(link.path)}
-                >
-                  <link.icon className={iconsClassName} />
-                  <span>{link.title}</span>
-                </CommandItem>
-              </Link>
+          <CommandEmpty>No matching pages.</CommandEmpty>
+          <CommandGroup heading="Pages">
+            {pages.map(([label, href]) => (
+              <CommandItem
+                key={href}
+                onSelect={() => {
+                  setOpen(false);
+                  router.push(href);
+                }}
+              >
+                {label}
+              </CommandItem>
             ))}
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="External">
-            {externalLinks.map((link, index) => (
-              <Link href={link.path} target="_blank" key={index}>
-                <CommandItem onSelect={() => redirectExternal(link.path)}>
-                  <link.icon className={iconsClassName} />
-                  <span>{link.title}</span>
-                </CommandItem>
-              </Link>
+          <CommandGroup heading="Links">
+            {links.map(([label, href]) => (
+              <CommandItem
+                key={href}
+                onSelect={() => {
+                  setOpen(false);
+                  window.location.assign(href);
+                }}
+              >
+                {label}
+              </CommandItem>
             ))}
           </CommandGroup>
         </CommandList>

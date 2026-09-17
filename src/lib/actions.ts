@@ -1,227 +1,81 @@
 "use server";
 
-import { db } from "@/db";
-import { z } from "zod";
 import sgMail from "@sendgrid/mail";
+import { desc, eq } from "drizzle-orm";
+import { z } from "zod";
+import { getDb } from "@/db";
 import { newsletterUsersTable, snippetsTable } from "@/db/schema";
-import { GITHUB_ACCESS_TOKEN, UNIVERSAL_USERNAME } from "@/constants";
-import { eq } from "drizzle-orm";
 
-export interface IContribution {
-  repo: string;
-  repoUrl: string;
-  committedDate: string;
-  commitUrl: string;
-  message: string;
-  abbreviatedOid: string;
-}
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .pipe(z.email())
+  .pipe(z.string().max(254));
 
-export interface IRepo {
-  name: string;
-  url: string;
-  defaultBranchRef: {
-    target: {
-      history: {
-        nodes: [
-          {
-            message: string;
-            committedDate: string;
-            url: string;
-            abbreviatedOid: string;
-          }
-        ];
-      };
-    };
-  };
-}
-
-export interface GetContributionsOptions {
-  topFiveOnly?: boolean;
-}
-
-export const getRecentContributions = async (
-  options: GetContributionsOptions = {}
-) => {
-  const { topFiveOnly = false } = options;
-
-  const config = topFiveOnly
-    ? { limit: 5, commitsPerRepo: 10, repoCount: 20 }
-    : { limit: 100, commitsPerRepo: 100, repoCount: 15 };
-
-  const query = `
-  query {
-    user(login: "${UNIVERSAL_USERNAME}") {
-      repositories(first: ${config.repoCount}, orderBy: {field: UPDATED_AT, direction: DESC}) {
-        nodes {
-          name
-          url
-          defaultBranchRef {
-            target {
-              ... on Commit {
-                history(first: ${config.commitsPerRepo}, author: {id: "MDQ6VXNlcjcxODE3Njkx"}) {
-                  nodes {
-                    url
-                    message
-                    committedDate
-                    abbreviatedOid
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  `;
-
-  const response = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${GITHUB_ACCESS_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ query }),
-    next: {
-      revalidate: 3600,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`GitHub API error: ${response.status}`);
-  }
-
-  const { data, errors } = await response.json();
-
-  if (errors) {
-    throw new Error(`GraphQL errors: ${JSON.stringify(errors)}`);
-  }
-
-  const allCommits: IContribution[] = [];
-
-  data.user.repositories.nodes.forEach((repo: IRepo) => {
-    if (repo.defaultBranchRef?.target?.history?.nodes) {
-      repo.defaultBranchRef.target.history.nodes.forEach((commit) => {
-        allCommits.push({
-          repo: repo.name,
-          repoUrl: repo.url,
-          commitUrl: commit.url,
-          committedDate: commit.committedDate,
-          message: commit.message,
-          abbreviatedOid: commit.abbreviatedOid,
-        });
-      });
-    }
-  });
-
-  allCommits.sort(
-    (a, b) => +new Date(b.committedDate) - +new Date(a.committedDate)
-  );
-
-  return allCommits.slice(0, config.limit);
-};
-
-const userEmailSchema = z.string().email();
-
-export const addToNewsletter = async (formData: FormData) => {
-  const validatedResult = userEmailSchema.safeParse(formData.get("email"));
-
-  if (validatedResult.error) {
-    return {
-      error: validatedResult.error.format()._errors[0],
-    };
-  }
-
+export async function addToNewsletter(formData: FormData) {
+  const result = emailSchema.safeParse(formData.get("email"));
+  if (!result.success) return { error: "Enter a valid email address." };
   try {
-    const a = await db.insert(newsletterUsersTable).values({
-      email: validatedResult.data,
-    });
-    return {
-      success: "You've been added to the newsletter!",
-    };
-  } catch (error: unknown) {
-    if (error instanceof Error && (error as any).code === "23505") {
-      return {
-        error: "You're already subscribed to the newsletter.",
-      };
-    }
-    return {
-      error:
-        "An unexpected error occurred while processing your request. Please try again!",
-    };
+    const inserted = await getDb()
+      .insert(newsletterUsersTable)
+      .values({ email: result.data })
+      .onConflictDoNothing({ target: newsletterUsersTable.email })
+      .returning({ id: newsletterUsersTable.id });
+    return inserted.length
+      ? { success: "You’re on the list." }
+      : { error: "You’ve already subscribed." };
+  } catch {
+    return { error: "I couldn’t save your email. Please try again later." };
   }
-};
+}
 
-const contactUsSchema = z.object({
-  email: z.string().email(),
-  name: z.string().min(1),
-  message: z.string().min(1),
+const contactSchema = z.object({
+  email: emailSchema,
+  name: z.string().trim().min(1, "Enter your name.").max(100),
+  message: z.string().trim().min(1, "Write a message.").max(5000),
 });
 
-export const sendEmailToMe = async (formData: FormData) => {
-  const validatedResult = contactUsSchema.safeParse({
-    email: formData.get("email"),
-    name: formData.get("name"),
-    message: formData.get("message"),
-  });
-
-  if (!validatedResult.success) {
-    return {
-      error: validatedResult.error.format().email?._errors[0] ?? "Invalid data",
-    };
-  }
-
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
-
+export async function sendEmailToMe(formData: FormData) {
+  if (formData.get("website"))
+    return { error: "Please email dev@krishnaaa.com instead." };
+  const result = contactSchema.safeParse(Object.fromEntries(formData));
+  if (!result.success)
+    return { error: result.error.issues[0]?.message ?? "Check your message." };
+  const key = process.env.SENDGRID_API_KEY;
+  if (!key) return { error: "Please email dev@krishnaaa.com instead." };
   try {
-    const mailRes = await sgMail.send({
-      from: `Krishna Kumar <portfolio@krishnaaa.com>`,
+    sgMail.setApiKey(key);
+    await sgMail.send({
+      from: "Krishna Kumar <portfolio@krishnaaa.com>",
       to: "krishnakumarlal8421@gmail.com",
-      subject: `🚀 New Message from ${validatedResult.data.name} 🚀 | krishnaaa.com`,
-      html: `
-          <p>Name:         ${validatedResult.data.name}</p>
-          <p>Email:        ${validatedResult.data.email}</p>
-          <p>Message:      ${validatedResult.data.message}</p>
-      `,
+      replyTo: result.data.email,
+      subject: `Website message from ${result.data.name}`,
+      text: `Name: ${result.data.name}\nEmail: ${result.data.email}\n\n${result.data.message}`,
     });
-
-    if (mailRes[0].statusCode !== 202) {
-      throw new Error();
-    }
-
+    return { success: "Thanks for writing." };
+  } catch {
     return {
-      success: "Message sent successfully! I'll get back to you soon.",
-    };
-  } catch (error: unknown) {
-    return {
-      error:
-        "An unexpected error occurred while processing your request. Please try again!",
+      error: "I couldn’t send your message. Please email dev@krishnaaa.com.",
     };
   }
-};
+}
 
 export async function getSnippets() {
   try {
-    const snippets = await db
+    return await getDb()
       .select()
       .from(snippetsTable)
-      .orderBy(snippetsTable.createdAt);
-    return snippets;
-  } catch (error) {
-    console.error("Error fetching snippets:", error);
-    return [];
+      .orderBy(desc(snippetsTable.createdAt));
+  } catch {
+    return null;
   }
 }
 
 export async function getSnippetBySlug(slug: string) {
-  try {
-    const [snippet] = await db
-      .select()
-      .from(snippetsTable)
-      .where(eq(snippetsTable.slug, slug));
-    return snippet;
-  } catch (error) {
-    console.error("Error fetching snippet:", error);
-    return null;
-  }
+  const [snippet] = await getDb()
+    .select()
+    .from(snippetsTable)
+    .where(eq(snippetsTable.slug, slug));
+  return snippet ?? null;
 }

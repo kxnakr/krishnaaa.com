@@ -1,18 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import type { Snippet } from "@/db/schema";
 import CopySnippet from "./copy-snippet";
 import DownloadSnippet from "./download-snippet";
 
 interface SnippetCardProps {
-  snippet: {
-    title: string;
-    description: string;
-    code: string;
-    language: string;
-    filename: string;
-    slug: string;
-  };
+  snippet: Snippet;
   noButtons?: boolean;
 }
 

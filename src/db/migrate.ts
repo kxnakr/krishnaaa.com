@@ -1,9 +1,9 @@
-import { db } from "@/db";
 import { migrate } from "drizzle-orm/neon-http/migrator";
+import { getDb } from "@/db";
 
 const main = async () => {
   try {
-    await migrate(db, {
+    await migrate(getDb(), {
       migrationsFolder: "src/db/migrations",
     });
   } catch (error) {

@@ -1,6 +1,12 @@
-import { boolean, pgTable, timestamp, varchar, text } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
-import { InferSelectModel } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
+import {
+  boolean,
+  pgTable,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 export const newsletterUsersTable = pgTable("newsletter_users", {
   id: varchar({ length: 36 }).$defaultFn(createId).primaryKey(),

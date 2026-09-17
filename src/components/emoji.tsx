@@ -1,5 +1,3 @@
-import React from "react";
-
 interface IEmoji {
   label?: string;
   symbol: string;

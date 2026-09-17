@@ -3,7 +3,7 @@ export const NAME = "Krishna Kumar";
 export const SITE_TITLE = `${NAME}`;
 export const SITE_NAME = "Krishna Kumar";
 export const SITE_DESCRIPTION =
-  "Krishna Kumar's personal website. I am a Full Stack Developer with experience in building web applications, APIs, and cloud infrastructure.";
+  "Krishna Kumar’s personal website. Software projects, writing, and experiments with AI and developer tools.";
 export const SITE_URL = "https://krishnaaa.com";
 export const SITE_KEYWORDS = [
   "Krishna Kumar",
@@ -46,8 +46,7 @@ export const GITHUB_URL = `https://github.com/${UNIVERSAL_USERNAME}`;
 export const TWITTER_URL = `https://twitter.com/${UNIVERSAL_USERNAME}`;
 export const LINKEDIN_URL = `https://linkedin.com/in/${UNIVERSAL_USERNAME}`;
 export const LEETCODE_URL = `https://leetcode.com/u/${UNIVERSAL_USERNAME}`;
-export const RESUME_URL =
-  "https://drive.google.com/file/d/1ZlSClQcy0z2oHSJ3W8Afvx4t4QBppiw2/view?usp=sharing";
+export const RESUME_URL = "/resume.pdf";
 
 // Google Analytics
 export const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;

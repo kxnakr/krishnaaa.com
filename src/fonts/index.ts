@@ -1,4 +1,4 @@
-import { Spline_Sans_Mono, Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Spline_Sans_Mono } from "next/font/google";
 
 export const splineSansMono = Spline_Sans_Mono({
   subsets: ["latin"],

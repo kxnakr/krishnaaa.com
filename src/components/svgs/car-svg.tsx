@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
-import { ISvg } from "@/types";
+import type { ISvg } from "@/types";
 
 const CarSvg = ({ className, height, width }: ISvg) => {
   return (
     <svg
+      aria-hidden="true"
       width={width || "86"}
       height={height || "514"}
       viewBox="0 0 86 514"

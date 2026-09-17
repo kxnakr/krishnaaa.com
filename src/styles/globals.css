@@ -1,3 +1,80 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-light: #f6f6f6;
+  --color-dark: #080808;
+  --color-muted-foreground: #71717a;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 2rem;
+  }
+  body {
+    color: #18181b;
+  }
+  .dark body {
+    color: #f4f4f5;
+  }
+  * {
+    border-color: var(--color-zinc-200);
+  }
+  .dark * {
+    border-color: var(--color-zinc-800);
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+  ::selection {
+    background: #d4d4d8;
+    color: #18181b;
+  }
+}
+
+@layer components {
+  .icon-button {
+    @apply inline-flex size-8 shrink-0 items-center justify-center rounded-md text-zinc-600 transition-colors hover:bg-zinc-200/60 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50;
+  }
+  .quiet-link {
+    @apply text-zinc-600 underline-offset-4 hover:text-zinc-950 hover:underline dark:text-zinc-400 dark:hover:text-zinc-100;
+  }
+  .text-link {
+    @apply underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-600 dark:decoration-zinc-700 dark:hover:decoration-zinc-400;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-enter {
+    animation: page-enter 350ms ease-out;
+  }
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: Reduced motion must override component effects. */
+    animation: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: Reduced motion must override component effects. */
+    transition: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: Reduced motion must override component effects. */
+    scroll-behavior: auto !important;
+  }
+}

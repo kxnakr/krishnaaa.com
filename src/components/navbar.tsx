@@ -1,49 +1,31 @@
 import Link from "next/link";
+import { Menu } from "@/components/menu";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { RESUME_URL } from "@/constants";
 import { splineSansMono } from "@/fonts";
-import { cn } from "@/lib/utils";
-import { Menu } from "./menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import Kbd from "./kbd";
 
-const Navbar = () => {
+export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center py-8">
-      <Link href="/">
-        <span className={cn("font-bold text-lg", splineSansMono.className)}>
-          krishna
-        </span>
+    <nav
+      aria-label="Main navigation"
+      className="flex items-center justify-between py-8"
+    >
+      <Link
+        href="/"
+        className={`${splineSansMono.className} text-lg font-bold`}
+      >
+        krishna
       </Link>
-
-      <div className="flex justify-center items-center gap-4">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <ThemeToggle />
-            </TooltipTrigger>
-            <TooltipContent>
-              <Kbd letter="J" />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Menu />
-            </TooltipTrigger>
-            <TooltipContent>
-              <Kbd letter="K" />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div className="flex items-center gap-3 sm:gap-4">
+        <Link href="/projects" className="quiet-link text-sm">
+          projects
+        </Link>
+        <a href={RESUME_URL} className="quiet-link text-sm">
+          resume
+        </a>
+        <ThemeToggle />
+        <Menu />
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

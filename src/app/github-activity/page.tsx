@@ -1,39 +1,48 @@
-import Link from "next/link";
-import { getRecentContributions } from "@/lib/actions";
 import { format, parseISO } from "date-fns";
+import type { Metadata } from "next";
+import { GITHUB_URL } from "@/constants";
+import { getRecentContributions } from "@/lib/github";
 import MyGithubCalendar from "./my-github-calendar";
 
-const GithubActivityPage = async () => {
+export const metadata: Metadata = {
+  title: "GitHub activity",
+  alternates: { canonical: "/github-activity" },
+};
+
+export default async function GithubActivityPage() {
   const contributions = await getRecentContributions();
   return (
-    <main className="space-y-8">
-      <header className="font-bold">
-        <span>github activity</span>
-      </header>
+    <main id="main" className="page-enter space-y-8">
+      <h1 className="text-xl font-semibold">github activity</h1>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        You can find my public work on{" "}
+        <a href={GITHUB_URL} className="text-link">
+          GitHub
+        </a>
+        .
+      </p>
       <MyGithubCalendar />
-      <ul className="space-y-8">
-        {contributions.map((contribution) => (
-          <li key={contribution.abbreviatedOid} className="">
-            <Link
-              href={contribution.repoUrl}
-              className="text-sm text-zinc-600 dark:text-zinc-400 hover:underline"
+      <ul className="space-y-6">
+        {contributions.map((commit) => (
+          <li key={commit.url} className="min-w-0 space-y-1">
+            <a href={commit.repoUrl} className="quiet-link text-xs">
+              {commit.repo}
+            </a>
+            <a
+              href={commit.url}
+              className="block break-words text-sm hover:underline underline-offset-4"
             >
-              {contribution.repo}
-            </Link>
-            <Link
-              href={contribution.commitUrl}
-              className="flex justify-between items-center hover:underline"
+              {commit.messageHeadline}
+            </a>
+            <time
+              dateTime={commit.committedDate}
+              className="block text-xs text-zinc-500 dark:text-zinc-400"
             >
-              <p className="w-4/6">{contribution.message}</p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                {format(parseISO(contribution.committedDate), "MMM do, yy")}
-              </p>
-            </Link>
+              {format(parseISO(commit.committedDate), "MMM d, yyyy")}
+            </time>
           </li>
         ))}
       </ul>
     </main>
   );
-};
-
-export default GithubActivityPage;
+}

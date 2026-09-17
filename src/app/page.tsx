@@ -1,180 +1,135 @@
-import Emoji from "@/components/emoji";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { MdAlternateEmail } from "react-icons/md";
+import { ProjectList } from "@/components/project-list";
 import {
   EMAIL_ADDRESS,
   GITHUB_URL,
-  // GITHUB_USERNAME,
   LINKEDIN_URL,
   NAME,
   TWITTER_URL,
 } from "@/constants";
-import Image from "next/image";
-import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { MdAlternateEmail } from "react-icons/md";
-import { FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-// import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
+import { experience, projects, writing } from "@/content/site";
 import { splineSansMono } from "@/fonts";
-import { cn } from "@/lib/utils";
-import { getRecentContributions, getSnippets } from "../lib/actions";
-import { format, parseISO } from "date-fns";
-import Newsletter from "@/components/newsletter";
-import CopySnippet from "./snippets/copy-snippet";
-import DownloadSnippet from "./snippets/download-snippet";
 
-export default async function Home() {
-  const contributions = await getRecentContributions({
-    topFiveOnly: true,
-  });
-  const snippets = await getSnippets();
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
+export default function Home() {
   return (
-    <main className="flex flex-col gap-20">
-      <section className="m-auto flex flex-col items-center gap-4">
+    <main id="main" className="page-enter flex flex-col gap-16 sm:gap-20">
+      <section className="flex flex-col items-center gap-4 text-center">
         <Image
           src="/krishna.png"
-          alt={`${NAME}'s Photo`}
+          alt="Krishna"
           width={210}
-          height={210 * 1.17157}
-          quality={100}
+          height={246}
+          sizes="210px"
+          preload
           draggable={false}
-          priority
         />
-        <span
-          className={cn("text-xl font-extrabold", splineSansMono.className)}
-        >
+        <h1 className={`${splineSansMono.className} text-xl font-bold`}>
           {NAME}
-        </span>
-        <span className="w-full sm:w-5/6 text-center">
-          Passionate about crafting user-friendly applications{" "}
-          <Emoji symbol="🚀" label="rocket" />, using modern technologies to
-          deliver efficient and delightful experiences{" "}
-          <Emoji symbol="💻" label="laptop" />.
-        </span>
-
-        <div className="flex gap-6 mt-2">
-          <Link href={GITHUB_URL} target="_blank">
-            <FaGithub size={24} />
-          </Link>
-          <Link href={`mailto:${EMAIL_ADDRESS}`}>
+        </h1>
+        <p className="max-w-md leading-relaxed text-zinc-700 dark:text-zinc-300">
+          I’m a software engineer in India. I build web and mobile apps, and
+          spend much of my time exploring AI and developer tools.
+        </p>
+        <div className="mt-2 flex items-center gap-6">
+          <a href={GITHUB_URL} aria-label="GitHub">
+            <FaGithub size={22} />
+          </a>
+          <a href={`mailto:${EMAIL_ADDRESS}`} aria-label="Email Krishna">
             <MdAlternateEmail size={24} />
-          </Link>
-          <Link href={LINKEDIN_URL} target="_blank">
-            <FaLinkedin size={24} />
-          </Link>
-          <Link href={TWITTER_URL} target="_blank">
-            <FaXTwitter size={24} />
-          </Link>
+          </a>
+          <a href={LINKEDIN_URL} aria-label="LinkedIn">
+            <FaLinkedin size={22} />
+          </a>
+          <a href={TWITTER_URL} aria-label="X">
+            <FaXTwitter size={21} />
+          </a>
         </div>
       </section>
-
-      <section className="space-y-8">
-        <header className="font-bold">
-          <span>tldr;</span>
-        </header>
-        <ul className="list-disc space-y-3 ml-5">
-          <li>
-            Self-taught full-stack developer with expertise in Node.js, Next.js,
-            and Golang <Emoji symbol="💻" label="laptop" />.
-          </li>
-          <li>
-            Passionate about backend development and DevOps{" "}
-            <Emoji symbol="⚙️" label="gear" /> to build efficient and scalable
-            systems.
-          </li>
-          <li>
-            Proficient in leveraging Docker, GCP, and CI/CD to create reliable
-            and cloud-native applications <Emoji symbol="☁️" label="cloud" />.
-          </li>
-          <li>
-            4+ years of freelancing experience delivering solutions like static
-            sites, LMS platforms, dashboards, and agency landing pages tailored
-            to startup needs <Emoji symbol="🛠️" label="tools" />.
-          </li>
-        </ul>
+      <section aria-labelledby="projects-heading" className="space-y-6">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 id="projects-heading" className="font-semibold">
+            things i’m building
+          </h2>
+          <Link href="/projects" className="quiet-link text-sm">
+            all projects
+          </Link>
+        </div>
+        <ProjectList
+          items={projects
+            .filter((project) => project.group === "project")
+            .slice(0, 3)}
+        />
       </section>
-
-      <section className="space-y-8">
-        <header className="font-bold flex justify-between">
-          <span>blogs</span>
-          <Link href="/blogs">
-            <span className="text-sm font-light">show all</span>
-          </Link>
-        </header>
-        <ul className="space-y-3">
-          <Link href="https://blogs.krishnaaa.com/javascript-basics-for-reactjs-a-beginners-guide">
-            <li className="flex justify-between hover:underline">
-              <span>
-                JavaScript Basics for React.js: A Beginner&apos;s Guide
-              </span>
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                Nov 3, 2023
-              </span>
-            </li>
-          </Link>
-        </ul>
-      </section>
-
-      <section className="space-y-8">
-        <header className="font-bold flex justify-between">
-          <span>snippets</span>
-          <Link href="/snippets">
-            <span className="text-sm font-light">show all</span>
-          </Link>
-        </header>
-        <ul className="space-y-3">
-          {snippets.slice(0, 5).map((snippet) => (
-            <li key={snippet.id} className="flex justify-between items-center">
-              <Link
-                href={`/snippets/${snippet.slug}`}
-                className="hover:underline"
-              >
-                {snippet.title}
-              </Link>
-              <div className="flex gap-2">
-                <CopySnippet iconOnly code={snippet.code} />
-                <DownloadSnippet
-                  iconOnly
-                  code={snippet.code}
-                  filename={snippet.filename}
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="space-y-8">
-        <header className="font-bold flex justify-between">
-          <span>github activity</span>
-          <Link href="/github-activity">
-            <span className="text-sm font-light">show all</span>
-          </Link>
-        </header>
-        <ul className="space-y-3">
-          {contributions.map((contribution) => (
-            <li key={contribution.abbreviatedOid} className="">
-              <Link
-                href={contribution.repoUrl}
-                className="text-sm text-zinc-600 dark:text-zinc-400 hover:underline"
-              >
-                {contribution.repo}
-              </Link>
-              <Link
-                href={contribution.commitUrl}
-                className="flex justify-between items-center hover:underline"
-              >
-                <p className="w-4/6">{contribution.message}</p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  {format(parseISO(contribution.committedDate), "MMM do, yy")}
+      <section aria-labelledby="experience-heading" className="space-y-6">
+        <h2 id="experience-heading" className="font-semibold">
+          where i’ve worked
+        </h2>
+        <ul className="space-y-7">
+          {experience.map((job) => (
+            <li key={job.company}>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 className="font-medium">{job.company}</h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {job.dates}
                 </p>
-              </Link>
+              </div>
+              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                {job.role}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                {job.description}
+              </p>
             </li>
           ))}
         </ul>
       </section>
-      <Newsletter />
+      <section aria-labelledby="about-heading" className="space-y-4">
+        <h2 id="about-heading" className="font-semibold">
+          a little about me
+        </h2>
+        <p className="leading-relaxed text-zinc-700 dark:text-zinc-300">
+          I studied computer science at KIIT. I work with TypeScript and React,
+          write backend services, and look after the infrastructure they run on.
+        </p>
+        <p className="leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Outside that work, I’ve been learning Rust, running models on my Mac,
+          and experimenting with agent memory and 3D tools. I keep those
+          experiments{" "}
+          <Link href="/projects#experiments" className="text-link">
+            here
+          </Link>
+          .
+        </p>
+      </section>
+      <section aria-labelledby="writing-heading" className="space-y-5">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 id="writing-heading" className="font-semibold">
+            writing
+          </h2>
+          <Link href="/snippets" className="quiet-link text-sm">
+            code snippets
+          </Link>
+        </div>
+        <ul>
+          {writing.map((post) => (
+            <li key={post.url}>
+              <a href={post.url} className="text-link leading-relaxed">
+                {post.title}
+              </a>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                {post.date}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }
