@@ -4,21 +4,21 @@ My personal site, built with Next.js, React, TypeScript, and Tailwind CSS.
 
 ## Local development
 
-Use pnpm because this repository has a pnpm lockfile.
+Use bun because this repository has a bun lockfile.
 
 ```sh
-pnpm install
-pnpm dev
+bun run install
+bun run dev
 ```
 
 ```sh
-pnpm lint
-pnpm typecheck
-pnpm build
-pnpm start
+bun run lint
+bun run typecheck
+bun run build
+bun run start
 ```
 
-Biome handles formatting and linting. Run `pnpm format` to format files.
+Biome handles formatting and linting. Run `bun run format` to format files.
 
 ## Content
 

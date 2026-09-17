@@ -10,7 +10,7 @@ Describe projects at their implemented scope. Label experiments and unfinished w
 
 # Development
 
-- Keep the existing pnpm lockfile and use pnpm for this checkout. Install dependencies through the package manager.
+- Keep the existing bun lockfile and use bun for this checkout. Install dependencies through the package manager.
 - Read version-matched framework documentation before upgrading or changing framework APIs.
 - Prefer maintained libraries and the existing UI components. Keep changes small and readable; do not use `any`.
 - Use kebab-case for new TypeScript and TSX files.
