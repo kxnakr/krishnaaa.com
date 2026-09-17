@@ -9,6 +9,8 @@ export function ProjectList({ items }: { items: typeof projects }) {
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <a
               href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-1 font-medium hover:underline underline-offset-4"
             >
               {project.name}

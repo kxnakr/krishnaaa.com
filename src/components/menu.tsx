@@ -83,7 +83,11 @@ export function Menu() {
                 key={href}
                 onSelect={() => {
                   setOpen(false);
-                  window.location.assign(href);
+                  if (href.startsWith("http")) {
+                    window.open(href, "_blank", "noopener,noreferrer");
+                  } else {
+                    window.location.assign(href);
+                  }
                 }}
               >
                 {label}

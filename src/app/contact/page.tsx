@@ -23,11 +23,21 @@ export default async function ContactPage() {
         </p>
         <p className="text-zinc-600 dark:text-zinc-400">
           I’m also on{" "}
-          <a href={GITHUB_URL} className="text-link">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-link"
+          >
             GitHub
           </a>{" "}
           and{" "}
-          <a href={TWITTER_URL} className="text-link">
+          <a
+            href={TWITTER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-link"
+          >
             X
           </a>
           .

@@ -16,7 +16,12 @@ export default async function GithubActivityPage() {
       <h1 className="text-xl font-semibold">github activity</h1>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
         You can find my public work on{" "}
-        <a href={GITHUB_URL} className="text-link">
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-link"
+        >
           GitHub
         </a>
         .
@@ -25,11 +30,18 @@ export default async function GithubActivityPage() {
       <ul className="space-y-6">
         {contributions.map((commit) => (
           <li key={commit.url} className="min-w-0 space-y-1">
-            <a href={commit.repoUrl} className="quiet-link text-xs">
+            <a
+              href={commit.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="quiet-link text-xs"
+            >
               {commit.repo}
             </a>
             <a
               href={commit.url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="block break-words text-sm hover:underline underline-offset-4"
             >
               {commit.messageHeadline}

@@ -38,16 +38,31 @@ export default function Home() {
           spend much of my time exploring AI and developer tools.
         </p>
         <div className="mt-2 flex items-center gap-6">
-          <a href={GITHUB_URL} aria-label="GitHub">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
             <FaGithub size={22} />
           </a>
           <a href={`mailto:${EMAIL_ADDRESS}`} aria-label="Email Krishna">
             <MdAlternateEmail size={24} />
           </a>
-          <a href={LINKEDIN_URL} aria-label="LinkedIn">
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
             <FaLinkedin size={22} />
           </a>
-          <a href={TWITTER_URL} aria-label="X">
+          <a
+            href={TWITTER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="X"
+          >
             <FaXTwitter size={21} />
           </a>
         </div>
